@@ -52,6 +52,19 @@ Window {
 		snapMode: GridView.SnapToRow
 		property int itemPerRow: 4
 		property int itemMargins: 8
+
+		displaced: Transition {
+			NumberAnimation { properties: "x,y"; duration: 1000 }
+		}
+		remove: Transition {
+			ParallelAnimation {
+				NumberAnimation { property: "opacity"; to: 0; duration: 1000 }
+				NumberAnimation { properties: "x"; to: -thumbGrid.cellWidth; duration: 1000 }
+			}
+		}
+
+
+
 		delegate: Item {
 			width: thumbGrid.cellWidth
 			height: thumbGrid.cellHeight
@@ -82,6 +95,30 @@ Window {
 					anchors.fill: parent
 					onClicked: {
 						frameClient.selectImage(contentId); // "MY_F0007"
+					}
+				}
+
+				Rectangle {
+					anchors.right: effect.right
+					anchors.top: effect.top
+					anchors.margins: 4
+					color: deleteButtonMouseArea.pressed ? "#aa0000" :  "#ff0000"
+					width: 24
+					height: width
+					radius: width/2
+					Rectangle {
+						anchors.centerIn: parent
+						color: "#440000"
+						width: parent.width - 8
+						height: 4
+					}
+					MouseArea {
+						id: deleteButtonMouseArea
+						anchors.fill: parent
+						onClicked: {
+							frameClient.deleteImage(contentId);
+							thumbModel.remove(index);
+						}
 					}
 				}
 			}
