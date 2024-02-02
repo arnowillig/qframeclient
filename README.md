@@ -71,7 +71,7 @@ The `QFrameClient` class is part of the qframeclient library, allowing developer
 - `QFrameClient(QObject *parent = nullptr)`: Constructor for the `QFrameClient` class.
 - `virtual ~QFrameClient()`: Destructor for the `QFrameClient` class.
 - `static void registerQml()`: Registers the `QFrameClient` class for use in QML.
-- `bool isConnected() const`: Returns `true` if the client is connected to the Frame TV; otherwise, returns `false`.
+- `bool isConnected() const`: Returns `true` if the client is connected to the Frame TV.
 - `void setConnected(bool connected)`: Sets the connection status of the client.
 - `QString macAddress() const`: Returns the MAC address of the Frame TV device.
 - `void setMacAddress(const QString& macAddress)`: Sets the MAC address of the Frame TV device.
@@ -79,9 +79,9 @@ The `QFrameClient` class is part of the qframeclient library, allowing developer
 - `void setIpAddress(const QString& ipAddress)`: Sets the IP address of the Frame TV device.
 - `QString clientName() const`: Returns the name used to identify the client.
 - `void setClientName(const QString& clientName)`: Sets the name used to identify the client.
-- `bool artModeStatus() const`: Returns `true` if the Frame TV is in art mode; otherwise, returns `false`.
+- `bool artModeStatus() const`: Returns `true` if the Frame TV is in art mode.
 - `QVariantMap deviceInfo() const`: Returns a QVariantMap containing device information.
-- `bool hasFrameTVSupport() const`: Returns `true` if the Frame TV supports the client; otherwise, returns `false`.
+- `bool hasFrameTVSupport() const`: Returns `true` if the Frame TV supports the client.
 - `QString frameName() const`: Returns the name of the Frame TV device.
 
 ### Public Slots
