@@ -66,7 +66,7 @@ Window {
 			}
 		}
 
-		onContentYChanged: { refreshItem.opacity = contentY < -refreshItem.height ? 1 : 0 }
+		onContentYChanged: { refreshItem.opacity = dragging && (contentY < -refreshItem.height) ? 1 : 0; }
 		onDragEnded: { if (contentY < pullToRefreshThreshold) { frameClient.getContentList(); } }
 
 		Rectangle {
