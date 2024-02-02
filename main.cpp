@@ -5,7 +5,8 @@
 int main(int argc, char *argv[])
 {
 	QGuiApplication app(argc, argv);
-	qmlRegisterType<QFrameClient>("qframeclient", 1, 0, "FrameClient");
+
+	QFrameClient::registerQml();
 
 	QQmlApplicationEngine engine;
 

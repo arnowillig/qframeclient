@@ -14,7 +14,7 @@ Window {
 
 	FrameClient {
 		id: frameClient
-		clientName: "AleFrameClient"
+		clientName: "FrameClient"
 		macAddress: "54:3A:D6:B9:2C:35"
 		ipAddress:  "192.168.178.108"
 		connected: true

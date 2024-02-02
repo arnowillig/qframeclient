@@ -45,7 +45,9 @@ class QFrameClient : public QObject
 public:
 	explicit QFrameClient(QObject *parent = nullptr);
 	virtual ~QFrameClient();
-
+#ifdef QT_QUICK_LIB
+	static void registerQml();
+#endif
 	bool isConnected() const;
 	void setConnected(bool connected);
 	void getRestApiInfo();

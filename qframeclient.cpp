@@ -35,7 +35,9 @@
 #include <QUdpSocket>
 #include <QtEndian>
 #include <QWebSocket>
-
+#ifdef QT_QUICK_LIB
+#include <QtQml>
+#endif
 #define FRAME_API_URL				"http://%1:8001/api/v2/"
 #define D2D_SERVICE_MESSAGE_EVENT		"d2d_service_message"
 #define MS_CHANNEL_CONNECT_EVENT		"ms.channel.connect"
@@ -85,6 +87,13 @@ QFrameClient::~QFrameClient()
 	delete _websocket;
 	delete _manager;
 }
+
+#ifdef QT_QUICK_LIB
+void QFrameClient::registerQml()
+{
+	qmlRegisterType<QFrameClient>("qframeclient", 1, 0, "FrameClient");
+}
+#endif
 
 void QFrameClient::connectToFrame()
 {
