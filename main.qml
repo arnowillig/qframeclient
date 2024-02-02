@@ -7,8 +7,8 @@ import qframeclient 1.0
 Window {
 	id: window
 	visible: true
-	width: 1024
-	height: 768
+	width: 1280
+	height: 800
 	title: qsTr("QtFrameClient Demo")
 	color: "#222222"
 
@@ -28,14 +28,15 @@ Window {
 		}
 
 		onGotContentList: {
-			// Filter duplicates from contentList
+			// Filter duplicates out of contentList:
+			thumbModel.clear();
 			const contentIdSet = new Set();
 			contentList.forEach((item) => { contentIdSet.add(item.content_id); });
 			downloadList = Array.from(contentIdSet);
 			loadNextItem();
 		}
 		onGotThumbnail: { // (contentId, fileName)
-			console.log("onGotThumbnail",contentId, fileName);
+			// console.log("onGotThumbnail",contentId, fileName);
 			thumbModel.append({"contentId": contentId, "fileName": fileName});
 			loadNextItem();
 		}
@@ -50,8 +51,10 @@ Window {
 		cellWidth:  Math.floor(width / itemPerRow)
 		cellHeight: Math.round((cellWidth + 2 * itemMargins) * 9 / 16)
 		snapMode: GridView.SnapToRow
-		property int itemPerRow: 4
+
+		property int itemPerRow: Math.max(1, Math.round(width / 320))
 		property int itemMargins: 8
+		property int pullToRefreshThreshold: -100
 
 		displaced: Transition {
 			NumberAnimation { properties: "x,y"; duration: 1000 }
@@ -63,6 +66,34 @@ Window {
 			}
 		}
 
+		onContentYChanged: { refreshItem.opacity = contentY < -refreshItem.height ? 1 : 0 }
+		onDragEnded: { if (contentY < pullToRefreshThreshold) { frameClient.getContentList(); } }
+
+		Rectangle {
+			id: refreshItem
+			anchors.horizontalCenter: parent.horizontalCenter
+			width: 200
+			height: 40
+			radius: height/2
+			visible: opactity>0
+			opacity: 0
+			gradient: Gradient {
+				GradientStop {
+					position: 0
+					color: thumbGrid.contentY < thumbGrid.pullToRefreshThreshold ? "#0077b6" : "#90e0ef" // Darker blue to lighter blue
+				}
+				GradientStop {
+					position: 1
+					color: thumbGrid.contentY < thumbGrid.pullToRefreshThreshold ? "#023e8a" : "#caf0f8" // Even darker blue to very light blue
+				}
+			}
+			Behavior on opacity { NumberAnimation {} }
+			Text {
+				anchors.centerIn: parent
+				text: thumbGrid.contentY < thumbGrid.pullToRefreshThreshold ? "Release to refresh..." : "Pull to refresh..."
+				color: thumbGrid.contentY < thumbGrid.pullToRefreshThreshold ? "#ffffff" : "#222222"
+			}
+		}
 
 
 		delegate: Item {
