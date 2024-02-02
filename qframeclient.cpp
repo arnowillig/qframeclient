@@ -336,8 +336,6 @@ void QFrameClient::messageReceived(const QString &message)
 		// qDebug("%s", QJsonDocument::fromVariant(map).toJson().constData());
 	} else if (evt == MS_CHANNEL_READY_EVENT) {
 		qDebug("Frame Event: '%s'", qPrintable(evt));
-		// setArtModeStatus(artModeStatus()); // For initial QML property setting
-		// deleteImage("MY_F0028");
 		getApiVersion();
 		getDeviceInfo();
 		getArtModeStatus();
@@ -387,16 +385,6 @@ void QFrameClient::messageReceived(const QString &message)
 			QVariantList contentList = QJsonDocument::fromJson(dataMap.value("content_list").toString().toUtf8()).toVariant().toList();
 			// qDebug("Frame Event: content_list: %s", QJsonDocument::fromVariant(contentList).toJson().constData());
 			emit gotContentList(contentList);
-
-			/*
-			for (const QVariant& v : contentList) {
-				QVariantMap map = v.toMap();
-				QString contentId = map.value("content_id").toString();
-				QVariantMap connInfo{{"d2d_mode", "socket"},{"connection_id", QRandomGenerator::global()->bounded(0, 1024*1024*1024)}, {"id", _uuid}};
-				sendArtRequest(QVariantMap{{"request", "get_thumbnail"},{"content_id", contentId},{"conn_info", connInfo}}); // "on","off","test"
-
-			}
-			*/
 		} else if (evt == FRAME_EVENT_MATTE_LIST) {
 			QVariantList matteList = QJsonDocument::fromJson(dataMap.value("matte_color_list").toString().toUtf8()).toVariant().toList();
 			qDebug("Frame Event: matte_list: %s", QJsonDocument::fromVariant(matteList).toJson().constData());
@@ -432,7 +420,7 @@ void QFrameClient::messageReceived(const QString &message)
 				emit imageUploadFinished(contentId);
 			}
 		} else if (evt == FRAME_EVENT_IMAGE_LIST_DELETED) {
-			qDebug("FRAME_EVENT_IMAGE_LIST_DELETED: %s", QJsonDocument::fromVariant(dataMap).toJson().constData());
+			qDebug("Frame Event:  image_list_deleted: %s", QJsonDocument::fromVariant(dataMap).toJson().constData());
 			QVariantList list = QJsonDocument::fromVariant(dataMap.value("content_id_list").toString()).toVariant().toList();
 			QStringList contentIds;
 			for (const QVariant& v : list) {

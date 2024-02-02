@@ -18,32 +18,24 @@ Window {
 		macAddress: "54:3A:D6:B9:2C:35"
 		ipAddress:  "192.168.178.108"
 		connected: true
-		onConnectedChanged: {
-			console.log("FRAMECLIENT CONNECTED: ", connected)
-			if (connected) {
-				getContentList();
-				// deleteImage("MY_F0055");
-			}
-		}
-		property var contentIdList: ([])
+		onConnectedChanged: { if (connected) { getContentList(); } }
+		property var downloadList: ([])
 
 		function loadNextItem() {
-			if (contentIdList.length>0) {
-				getThumbnail(contentIdList.shift());
+			if (downloadList.length>0) {
+				getThumbnail(downloadList.shift());
 			}
 		}
 
 		onGotContentList: {
-			// console.log("CONTENT: ", JSON.stringify(contentList));
+			// Filter duplicates from contentList
 			const contentIdSet = new Set();
 			contentList.forEach((item) => { contentIdSet.add(item.content_id); });
-			contentIdList = Array.from(contentIdSet);
+			downloadList = Array.from(contentIdSet);
 			loadNextItem();
 		}
 		onGotThumbnail: { // (contentId, fileName)
-			console.log("onGotThumbnail",contentId,fileName);
-			//bditDialog.client.loadImage(fileName, "", frameClient.frameName, false);
-
+			console.log("onGotThumbnail",contentId, fileName);
 			thumbModel.append({"contentId": contentId, "fileName": fileName});
 			loadNextItem();
 		}
@@ -52,7 +44,7 @@ Window {
 	GridView {
 		id: thumbGrid
 		anchors.fill: parent
-		anchors.margins: 40
+		anchors.margins: 10
 		clip: true
 		model: ListModel { id: thumbModel; }
 		cellWidth: width/5
@@ -72,7 +64,7 @@ Window {
 					anchors.fill: parent
 					glowRadius: 8
 					spread: 0
-					color: "#80000000"
+					color: thumbItemMouseArea.pressed ? "#80ffffff" : "#80000000"
 					cornerRadius: 8
 				}
 				Image {
@@ -82,6 +74,7 @@ Window {
 					fillMode: Image.PreserveAspectFit
 				}
 				MouseArea {
+					id: thumbItemMouseArea
 					anchors.fill: parent
 					onClicked: {
 						frameClient.selectImage(contentId); // "MY_F0007"
