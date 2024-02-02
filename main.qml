@@ -47,9 +47,11 @@ Window {
 		anchors.margins: 10
 		clip: true
 		model: ListModel { id: thumbModel; }
-		cellWidth: width/5
-		cellHeight: (cellWidth+20) * 9 / 16
+		cellWidth:  Math.floor(width / itemPerRow)
+		cellHeight: Math.round((cellWidth + 2 * itemMargins) * 9 / 16)
 		snapMode: GridView.SnapToRow
+		property int itemPerRow: 4
+		property int itemMargins: 8
 		delegate: Item {
 			width: thumbGrid.cellWidth
 			height: thumbGrid.cellHeight
@@ -57,15 +59,17 @@ Window {
 			Item {
 				id: thumbItem
 				anchors.fill: parent
-				anchors.margins: 10
+				anchors.margins: thumbGrid.itemMargins
 
 				RectangularGlow {
 					id: effect
-					anchors.fill: parent
-					glowRadius: 8
+					anchors.centerIn: parent
+					width: thumbnailImage.paintedWidth
+					height: thumbnailImage.paintedHeight
+					glowRadius: Math.min(thumbGrid.itemMargins, 8)
 					spread: 0
 					color: thumbItemMouseArea.pressed ? "#80ffffff" : "#80000000"
-					cornerRadius: 8
+					cornerRadius: 4
 				}
 				Image {
 					id: thumbnailImage
