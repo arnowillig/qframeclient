@@ -45,7 +45,7 @@ FrameClient {
 
 This setup allows you to integrate `QFrameClient` into your Qt project and use it in your QML code.
 
-Here's the API documentation for the `QFrameClient` class in Markdown format:
+![Demo Application](docs/demo.png)
 
 ## QFrameClient API Documentation
 
