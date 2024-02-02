@@ -26,9 +26,33 @@
 
 ## Getting Started
 
-Developers can easily incorporate `QFrameClient` into their Qt projects and start building applications that bring a new level of interaction to Samsung The Frame TVs. The library's documentation provides comprehensive guides and examples to kickstart development.
+Developers can easily incorporate `QFrameClient` into their Qt projects and start building applications that bring a new level of interaction to Samsung The Frame TVs.
 
----
+### Using QFrameClient in QML:
 
-This introduction provides a concise overview of the `QFrameClient` library, highlighting its purpose, features, and potential applications. It's designed to give developers a clear understanding of how the library can be utilized in various scenarios involving Samsung The Frame TVs.
+In your C++ code, possibly in your `main()` function, include the following:
+
+```cpp
+QFrameClient::registerQml();
+```
+
+At the top of your QML file, add:
+
+```qml
+import qframeclient 1.0
+```
+
+You can use the `FrameClient` component in QML like this:
+
+```qml
+FrameClient {
+    id: frameClient
+    clientName: "FrameClient"       // A name used by The Frame to identify clients
+    macAddress: "54:3A:D6:XX:XX:XX" // Optional, only used for the Wake-On-LAN feature
+    ipAddress: "192.168.178.108"    // The IP address of your Frame-Device.
+    connected: true
+}
+```
+
+This setup allows you to integrate `QFrameClient` into your Qt project and use it in your QML code.
 
