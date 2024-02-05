@@ -75,7 +75,7 @@ Window {
 			width: 200
 			height: 40
 			radius: height/2
-			visible: opactity>0
+			visible: opacity>0
 			opacity: 0
 			gradient: Gradient {
 				GradientStop {
